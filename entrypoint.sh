@@ -43,7 +43,7 @@ _set_namespace() {
       NAMESPACE=$GITHUB_REPOSITORY
     elif _is_gcloud_registry; then
       # take project_id from Json Key
-      NAMESPACE=$(echo "${INPUT_PASSWORD}" | sed -rn 's@.+project_id" *: *"([^"]+).+@\1@p' 2> /dev/null)
+      NAMESPACE=$(echo ${INPUT_PASSWORD} | sed -rn 's@.+project_id" *: *"([^"]+).+@\1@p' 2> /dev/null)
       [ "$NAMESPACE" ] || return 1
     fi
     # aws-ecr does not need a namespace
@@ -154,7 +154,7 @@ _docker_login() {
   if _is_aws_ecr; then
     { _login_to_aws_ecr && _create_aws_ecr_repos; } || return 1
   else
-    echo "${INPUT_PASSWORD}" | docker login -u "${INPUT_USERNAME}" --password-stdin "${INPUT_REGISTRY}" || return 1
+    echo ${INPUT_PASSWORD} | docker login -u "${INPUT_USERNAME}" --password-stdin "${INPUT_REGISTRY}" || return 1
   fi
   trap logout_from_registry EXIT
 }
